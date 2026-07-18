@@ -1,7 +1,7 @@
-/logs/
+logs/
 /app/sql/
 local-site.json
-/conf/
+conf/
 /logs/
 .claude/
 .codex/
