@@ -1,0 +1,38 @@
+name: Deploy to cPanel (Theme & Plugins)
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy Theme & Plugins
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /clients.lacadev.com/ # deploy thẳng vào clients.lacadev.com
+
+          # local-dir làm gốc đồng bộ — bỏ hẳn tiền tố app/public/, server
+          # chỉ có wp-content/... ở gốc (không có thư mục app/ trên server).
+          local-dir: app/public/
+
+          # Chỉ deploy 2 thư mục quan trọng (đường dẫn tính từ local-dir ở trên)
+          include: |
+            wp-content/themes/**
+            wp-content/plugins/**
+
+          # Loại trừ những thứ không cần
+          exclude: |
+            .git/
+            .github/
+            *.md
+            .cpanel.yml
+            .gitignore
+            wp-content/uploads/**

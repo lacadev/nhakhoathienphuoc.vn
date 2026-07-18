@@ -1,0 +1,76 @@
+name: Publish Theme Updates
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  publish:
+    name: Build, package & publish theme update packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer:v2
+
+      - name: Build parent theme (lacadev-client)
+        working-directory: app/public/wp-content/themes/lacadev-client
+        run: composer install --no-dev --optimize-autoloader --prefer-dist
+
+      - name: Read theme version
+        id: versions
+        working-directory: app/public/wp-content/themes
+        run: |
+          PARENT_VERSION=$(grep -m1 '^ \* Version:' lacadev-client/theme/style.css | sed -E 's/^ \* Version:[[:space:]]*//')
+          echo "parent=$PARENT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+      # Chỉ đóng gói & publish theme CHA (lacadev-client). Theme con
+      # (lacadev-client-child) KHÔNG được tự động cập nhật xuống site khách —
+      # mỗi site khách có bộ file theme con khác nhau (theme-options.php,
+      # header/footer, archive-*, single-*, block-gutenberg...), nên không có
+      # khái niệm "1 bản chuẩn" để phát tán hàng loạt. Chỉ theme cha (code
+      # dùng chung) mới được phân phối qua kênh update tự động này.
+      - name: Package parent theme zip
+        working-directory: app/public/wp-content/themes
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/publish"
+
+          zip -r "$GITHUB_WORKSPACE/publish/lacadev-client.zip" lacadev-client \
+            -x "lacadev-client/.git/*" \
+            -x "lacadev-client/.github/*" \
+            -x "lacadev-client/node_modules/*" \
+            -x "lacadev-client/*.md"
+
+      - name: Generate update JSON file
+        env:
+          PARENT_VERSION: ${{ steps.versions.outputs.parent }}
+          BUILD_DATE: ${{ steps.versions.outputs.date }}
+        run: |
+          cat > "$GITHUB_WORKSPACE/publish/lacadev-client.json" <<EOF
+          {
+            "name": "La Cà Dev - Client",
+            "version": "$PARENT_VERSION",
+            "download_url": "https://client.lacadev.com/theme-updates/lacadev-client.zip",
+            "details_url": "https://client.lacadev.com",
+            "requires": "6.0",
+            "requires_php": "8.0",
+            "last_updated": "$BUILD_DATE",
+            "description": "Theme cha La Cà Dev - Client — cập nhật tự động từ client.lacadev.com",
+            "changelog": ""
+          }
+          EOF
+
+      - name: Upload theme-updates package
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/theme-updates/
+          local-dir: publish/
