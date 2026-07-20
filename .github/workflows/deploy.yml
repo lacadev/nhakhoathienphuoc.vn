@@ -29,6 +29,9 @@ jobs:
             wp-content/plugins/**
 
           # Loại trừ những thứ không cần
+          # Quan trọng: exclude mới thực sự chặn xoá trên server (include chỉ ưu tiên
+          # upload, không giới hạn phạm vi xoá) — nên các file core WP phải nằm ở đây,
+          # để việc gỡ chúng khỏi git không kéo theo xoá trên hosting.
           exclude: |
             .git/
             .github/
@@ -36,3 +39,32 @@ jobs:
             .cpanel.yml
             .gitignore
             wp-content/uploads/**
+            wp-admin/**
+            wp-includes/**
+            wp-content/upgrade/**
+            wp-content/cache/**
+            wp-content/languages/**
+            wp-content/wflogs/**
+            wp-content/litespeed/**
+            wp-content/upgrade-temp-backup/**
+            wp-content/backup-db/**
+            wp-content/debug.log
+            .htaccess
+            license.txt
+            local-xdebuginfo.php
+            local-phpinfo.php
+            readme.html
+            wp-activate.php
+            wp-blog-header.php
+            wp-comments-post.php
+            wp-config-sample.php
+            wp-config.php
+            wp-cron.php
+            wp-links-opml.php
+            wp-load.php
+            wp-mail.php
+            wp-settings.php
+            wp-signup.php
+            wp-trackback.php
+            wp-login.php
+            xmlrpc.php
