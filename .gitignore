@@ -8,3 +8,4 @@ conf/
 .github/skills/
 .agent/
 .envrc
+.DS_Store
