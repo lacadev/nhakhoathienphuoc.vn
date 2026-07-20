@@ -9,3 +9,4 @@ conf/
 .agent/
 .envrc
 .DS_Store
+local-phpinfo.php
