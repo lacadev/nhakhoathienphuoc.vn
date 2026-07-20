@@ -500,3 +500,111 @@
 body.menu-open {
   overflow: hidden;
 }
+
+// =============================================================================
+// HEADER — Nha Khoa Thiện Phước (Deep Green, logo trái + nav phải + CTA)
+// Class mới, không đụng tới rule .header/.header__nav-left/right ở trên —
+// markup header.php của site này đã đổi sang layout logo-trái đơn giản hơn.
+// =============================================================================
+
+.header {
+  font-family: 'Manrope', sans-serif;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: 5rem;
+  }
+
+  &__logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  &__logo-img {
+    height: 2.5rem;
+    width: auto;
+  }
+
+  &__logo-text {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: $primaryColor;
+  }
+
+  &__menu-list {
+    display: none;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    @include minWidth($md) {
+      display: flex;
+    }
+
+    .menu-item {
+      > a {
+        color: #40493d;
+        font-weight: 500;
+        font-size: 0.95rem;
+        text-decoration: none;
+        padding-bottom: 4px;
+        border-bottom: 2px solid transparent;
+        transition: color 0.2s ease, border-color 0.2s ease;
+
+        &:hover {
+          color: $primaryColor;
+        }
+      }
+
+      &.actived-menu > a {
+        color: $primaryColor;
+        font-weight: 700;
+        border-bottom-color: $primaryColor;
+      }
+    }
+  }
+
+  &__cta-btn {
+    display: none;
+    background-color: $primaryColor;
+    color: #fff;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 0.9;
+      color: #fff;
+    }
+
+    @include minWidth($md) {
+      display: inline-block;
+    }
+  }
+
+  &__overlay-cta {
+    display: block;
+    margin-top: 1.5rem;
+    background-color: $primaryColor;
+    color: #fff;
+    text-align: center;
+    padding: 0.85rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+}

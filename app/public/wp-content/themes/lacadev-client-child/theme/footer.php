@@ -7,278 +7,173 @@
  *
  * @package WPEmergeTheme
  */
-?>
-<!-- footer -->
-<?php
-$logo_footer = getOption('logo_footer');
-$logo_footer_url = wp_get_attachment_image_url($logo_footer, 'full');
-$footer_contact_heading = __('NHẬN TƯ VẤN NGAY', 'laca');
-$footer_contact_button_text = __('GỬI YÊU CẦU', 'laca');
-$footer_contact_budget_raw = trim((string) carbon_get_theme_option('footer_contact_budget_options'));
-$footer_contact_budget_raw_i18n = trim((string) getOption('footer_contact_budget_options'));
-$footer_contact_budget_source = $footer_contact_budget_raw !== '' ? $footer_contact_budget_raw : $footer_contact_budget_raw_i18n;
-$footer_contact_budget_options = $footer_contact_budget_source !== ''
-  ? array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $footer_contact_budget_source))))
-  : [
-    __('Dưới 1 tỷ', 'laca'),
-    __('1 - 3 tỷ', 'laca'),
-    __('3 - 5 tỷ', 'laca'),
-    __('5 - 10 tỷ', 'laca'),
-    __('Trên 10 tỷ', 'laca'),
-  ];
-$footer_contact_image_id = (int) carbon_get_theme_option('footer_contact_image');
-if (!$footer_contact_image_id) {
-  $footer_contact_image_id = (int) getOption('footer_contact_image');
+
+/**
+ * Icon SVG inline dùng riêng cho footer.php — không phụ thuộc font ngoài
+ * (Material Symbols qua Google Fonts từng bị lỗi không tải được, chỉ hiện
+ * chữ thô thay vì icon). Chỉ định nghĩa đúng icon footer cần dùng.
+ */
+if (!function_exists('nkt_footer_icon')) {
+	function nkt_footer_icon(string $name): string
+	{
+		$icons = [
+			'location_on' => '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>',
+			'call'        => '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path>',
+			'mail'        => '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22 6 12 13 2 6"></polyline>',
+			'schedule'    => '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>',
+			'thumb_up'    => '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>',
+			'play_circle' => '<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>',
+			'chat'        => '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>',
+		];
+
+		if (!isset($icons[$name])) {
+			return '';
+		}
+
+		return '<svg class="lcdc-icon" width="1em" height="1em" style="width:1em;height:1em;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . $icons[$name] . '</svg>';
+	}
 }
-$footer_contact_image_url = $footer_contact_image_id ? wp_get_attachment_image_url($footer_contact_image_id, 'large') : '';
-$footer_contact_image_alt = $footer_contact_image_id ? get_post_meta($footer_contact_image_id, '_wp_attachment_image_alt', true) : '';
+
+$footer_company     = getOption('company');
+$footer_phones      = getOption('phone_numbers');
+$footer_addresses   = getOption('address_locations');
+$footer_email       = getOption('email');
+$footer_hours       = getOption('hour_working');
+$footer_service_title = getOption('service_footer_title') ?: __('Dịch Vụ', 'laca');
+$footer_service_items = getOption('service_footer_items');
+$footer_policy_title  = getOption('policy_footer_title') ?: __('Liên Kết', 'laca');
+$footer_policy_items  = getOption('policy_footer_items');
+
+$footer_first_phone = '';
+if (!empty($footer_phones) && is_array($footer_phones)) {
+	foreach ($footer_phones as $p) {
+		if (!empty($p['phone'])) {
+			$footer_first_phone = $p['phone'];
+			break;
+		}
+	}
+}
 ?>
-
-<!-- block contact -->
-<section class="footer-contact-form">
-  <div class="container">
-    <div class="bcf__inner">
-      <div class="bcf__left" data-aos="fade-right">
-        <?php if ($footer_contact_heading): ?>
-          <h2 class="bcf__heading"><?php echo esc_html($footer_contact_heading); ?></h2>
-        <?php endif; ?>
-
-        <form class="bcf__form" method="POST" action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" novalidate
-          data-bcf-form>
-          <?php wp_nonce_field('laca_footer_contact_nonce', 'nonce'); ?>
-          <input type="hidden" name="action" value="laca_footer_contact_submit">
-
-          <div class="bcf__field">
-            <input type="text" name="tf_address" class="bcf__input"
-              placeholder="<?php esc_attr_e('Địa chỉ xây dựng', 'laca'); ?>" required>
-          </div>
-
-          <div class="bcf__field">
-            <input type="text" name="tf_scale" class="bcf__input"
-              placeholder="<?php esc_attr_e('Quy mô xây dựng', 'laca'); ?>" required>
-          </div>
-
-          <div class="bcf__field">
-            <select name="tf_budget" class="bcf__select" required>
-              <option value=""><?php esc_html_e('Ngân sách', 'laca'); ?></option>
-              <?php foreach ($footer_contact_budget_options as $option): ?>
-                <option value="<?php echo esc_attr($option); ?>"><?php echo esc_html($option); ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-
-          <div class="bcf__field">
-            <input type="text" name="tf_name" class="bcf__input" placeholder="<?php esc_attr_e('Họ và tên', 'laca'); ?>"
-              required>
-          </div>
-
-          <div class="bcf__field">
-            <input type="tel" name="tf_phone" class="bcf__input"
-              placeholder="<?php esc_attr_e('Số điện thoại liên hệ', 'laca'); ?>" required>
-          </div>
-
-          <div class="bcf__submit-wrap">
-            <button type="submit" class="bcf__btn">
-              <span class="bcf__btn-text"><?php echo esc_html($footer_contact_button_text); ?></span>
-              <span class="bcf__btn-loader" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3"
-                    stroke-dasharray="31.42" stroke-dashoffset="10"></circle>
-                </svg>
-              </span>
-            </button>
-          </div>
-
-          <div class="bcf__msg" role="alert" hidden></div>
-        </form>
-      </div>
-
-      <div class="bcf__right" data-aos="fade-left">
-        <?php if ($footer_contact_image_url): ?>
-          <div class="bcf__img-wrap">
-            <img src="<?php echo esc_url($footer_contact_image_url); ?>"
-              alt="<?php echo esc_attr($footer_contact_image_alt ?: get_bloginfo('name')); ?>" class="bcf__img"
-              loading="lazy">
-          </div>
-        <?php endif; ?>
-      </div>
-    </div>
-  </div>
-</section>
-
 <footer class="footer" role="contentinfo" data-aos="fade-up">
-  <div class="footer__main">
-    <div class="container">
+	<div class="footer__main">
+		<div class="container">
+			<div class="footer__grid">
 
-      <div class="footer__grid">
-        <!-- Menu về chúng tôi -->
-        <?php
-        $aboutTitle = getOption('about_footer_title');
-        ?>
-        <div class="footer__col">
-          <h3 class="footer__title"><?php echo esc_html($aboutTitle); ?></h3>
+				<!-- Logo + mô tả + social -->
+				<div class="footer__col footer__col--brand">
+					<div class="footer__brand">
+						<?php
+						$logo_footer = getOption('logo_footer');
+						$logo_footer_url = wp_get_attachment_image_url($logo_footer, 'full');
+						if ($logo_footer_url):
+							?>
+							<img src="<?php echo esc_url($logo_footer_url); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>" class="footer__logo-img">
+						<?php endif; ?>
+						<span class="footer__brand-name"><?php echo esc_html(get_bloginfo('name')); ?></span>
+					</div>
 
-          <ul class="footer__menu-list">
-            <!-- Công ty -->
-            <?php $company = getOption('company'); ?>
-            <?php if (!empty($company)): ?>
-              <li class="footer__menu-item">
-                <?php echo esc_html($company); ?>
-              </li>
-            <?php endif; ?>
+					<?php if ($footer_company): ?>
+						<p class="footer__desc"><?php echo esc_html($footer_company); ?></p>
+					<?php endif; ?>
 
-            <!-- Hotline -->
-            <?php
-            $ft_phones = getOption('phone_numbers');
-            if (!empty($ft_phones)):
-              ?>
-              <li class="footer__menu-item">
-                <span>
-                  <strong class="footer__contact-label">Hotline:</strong>
-                  <?php
-                  $phone_links = [];
-                  foreach ($ft_phones as $p) {
-                    if (!empty($p['phone'])) {
-                      $phone_links[] = '<a href="tel:' . esc_attr(preg_replace('/[^\d+]/', '', $p['phone'])) . '" class="footer__contact-link">' . esc_html($p['phone']) . '</a>';
-                    }
-                  }
-                  echo implode(' - ', $phone_links);
-                  ?>
-                </span>
-              </li>
-            <?php endif; ?>
+					<div class="footer__socials">
+						<a href="#" class="footer__social-link" aria-label="Facebook"><?php echo nkt_footer_icon('thumb_up'); ?></a>
+						<a href="#" class="footer__social-link" aria-label="Youtube"><?php echo nkt_footer_icon('play_circle'); ?></a>
+						<a href="#" class="footer__social-link" aria-label="Zalo"><?php echo nkt_footer_icon('chat'); ?></a>
+					</div>
+				</div>
 
-            <!-- Email -->
-            <?php
-            $footer_email = getOption('email');
-            if (!empty($footer_email)):
-              ?>
-              <li class="footer__contact-item">
-                <span><strong class="footer__contact-label">Email:</strong> <a
-                    href="mailto:<?php echo esc_attr($footer_email); ?>"
-                    class="footer__contact-link"><?php echo esc_html($footer_email); ?></a></span>
-              </li>
-            <?php endif; ?>
-          </ul>
-        </div>
+				<!-- Dịch Vụ -->
+				<?php if (!empty($footer_service_items)): ?>
+					<div class="footer__col">
+						<h3 class="footer__title"><?php echo esc_html($footer_service_title); ?></h3>
+						<ul class="footer__menu-list">
+							<?php foreach ($footer_service_items as $item): ?>
+								<li class="footer__menu-item">
+									<a href="<?php echo esc_url($item['url'] ?? '#'); ?>" class="footer__menu-link"><?php echo esc_html($item['name'] ?? ''); ?></a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endif; ?>
 
-        <!-- Menu dịch vụ -->
-        <?php
-        $serviceTitle = getOption('service_footer_title');
-        $serviceItems = getOption('service_footer_items');
-        if (!empty($serviceItems)):
-          ?>
-          <div class="footer__col footer__col--service">
-            <h3 class="footer__title"><?php echo esc_html($serviceTitle); ?></h3>
-            <ul class="footer__menu-list">
-              <?php foreach ($serviceItems as $item): ?>
-                <li class="footer__menu-item">
-                  <a href="<?php echo esc_url($item['url']); ?>"
-                    class="footer__menu-link"><?php echo esc_html($item['name']); ?></a>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
-        <?php endif; ?>
+				<!-- Liên Kết -->
+				<?php if (!empty($footer_policy_items)): ?>
+					<div class="footer__col">
+						<h3 class="footer__title"><?php echo esc_html($footer_policy_title); ?></h3>
+						<ul class="footer__menu-list">
+							<?php foreach ($footer_policy_items as $item): ?>
+								<li class="footer__menu-item">
+									<a href="<?php echo esc_url($item['url'] ?? '#'); ?>" class="footer__menu-link"><?php echo esc_html($item['name'] ?? ''); ?></a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endif; ?>
 
-        <!-- Menu chính sách -->
-        <?php
-        $policyTitle = getOption('policy_footer_title');
-        $policyItems = getOption('policy_footer_items');
-        if (!empty($policyItems)):
-          ?>
-          <div class="footer__col footer__col--policy">
-            <h3 class="footer__title"><?php echo esc_html($policyTitle); ?></h3>
-            <ul class="footer__menu-list">
-              <?php foreach ($policyItems as $item): ?>
-                <li class="footer__menu-item">
-                  <a href="<?php echo esc_url($item['url']); ?>"
-                    class="footer__menu-link"><?php echo esc_html($item['name']); ?></a>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
-        <?php endif; ?>
-      </div>
-      <!-- END footer__grid -->
+				<!-- Liên Hệ -->
+				<div class="footer__col">
+					<h3 class="footer__title"><?php esc_html_e('Liên Hệ', 'laca'); ?></h3>
+					<ul class="footer__contact-list">
+						<?php if (!empty($footer_addresses) && is_array($footer_addresses)): ?>
+							<?php foreach ($footer_addresses as $addr): ?>
+								<?php if (!empty($addr['address'])): ?>
+									<li class="footer__contact-item">
+										<?php echo nkt_footer_icon('location_on'); ?>
+										<span><?php echo nl2br(esc_html($addr['address'])); ?></span>
+									</li>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						<?php endif; ?>
 
-      <div class="footer__grid">
-        <!-- Showroom & nhà máy -->
-        <div class="footer__col">
-          <?php if ($googlemap = carbon_get_theme_option('googlemap' . currentLanguage())): ?>
-            <div class="footer__slogan"><?php echo $googlemap; ?></div>
-          <?php endif; ?>
+						<?php if ($footer_first_phone): ?>
+							<li class="footer__contact-item">
+								<?php echo nkt_footer_icon('call'); ?>
+								<a href="tel:<?php echo esc_attr(preg_replace('/[^\d+]/', '', $footer_first_phone)); ?>"><?php echo esc_html($footer_first_phone); ?></a>
+							</li>
+						<?php endif; ?>
 
-          <ul class="footer__contact-list">
-            <?php
-            $ft_addresses = getOption('address_locations');
-            if (!empty($ft_addresses)):
-              foreach ($ft_addresses as $addr):
-                if (!empty($addr['address'])):
-                  ?>
-                  <li class="footer__contact-item">
-                      <?php echo nl2br(esc_html($addr['address'])); ?>
-                  </li>
-                <?php endif; ?>
-              <?php endforeach; ?>
-            <?php endif; ?>
-          </ul>
-        </div>
+						<?php if ($footer_email): ?>
+							<li class="footer__contact-item">
+								<?php echo nkt_footer_icon('mail'); ?>
+								<a href="mailto:<?php echo esc_attr($footer_email); ?>"><?php echo esc_html($footer_email); ?></a>
+							</li>
+						<?php endif; ?>
 
-        <!-- Dự án tiêu biểu -->
-        <?php
-        $projectTitle = getOption('project_footer_title');
-        $projectItems = getOption('project_footer_items');
-        if (!empty($projectItems)):
-          ?>
-          <div class="footer__col footer__col--project">
-            <h3 class="footer__title"><?php echo esc_html($projectTitle); ?></h3>
-            <ul class="footer__menu-list">
-              <?php foreach ($projectItems as $item): ?>
-                <li class="footer__menu-item">
-                  <a href="<?php echo esc_url($item['url']); ?>"
-                    class="footer__menu-link"><?php echo esc_html($item['name']); ?></a>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
-        <?php endif; ?>
+						<?php if ($footer_hours): ?>
+							<li class="footer__contact-item">
+								<?php echo nkt_footer_icon('schedule'); ?>
+								<span><?php echo esc_html($footer_hours); ?></span>
+							</li>
+						<?php endif; ?>
+					</ul>
+				</div>
 
-        <!-- Đối tác -->
-        <?php
-        $partnerTitle = getOption('partner_footer_title');
-        $partnerItems = getOption('partner_footer_items');
-        if (!empty($partnerItems)):
-          ?>
-          <div class="footer__col footer__col--partner">
-            <h3 class="footer__title">
-              <?php echo esc_html($partnerTitle); ?>
-            </h3>
-            <ul class="footer__menu-list">
-              <?php foreach ($partnerItems as $item): ?>
-                <li class="footer__menu-item">
-                  <a href="<?php echo esc_url($item['url']); ?>" class="footer__menu-link">
-                    <?php echo esc_html($item['name']); ?>
-                  </a>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
-        <?php endif; ?>
-      </div>
-      <!-- END footer__grid -->
+			</div>
+			<!-- END footer__grid -->
 
-    </div>
-    <!-- END container -->
-  </div>
-  <!-- END footer__main -->
+			<div class="footer__bottom">
+				<p class="footer__copyright">
+					&copy; <?php echo esc_html(date('Y')); ?> <?php echo esc_html(get_bloginfo('name')); ?>. <?php esc_html_e('Tất cả quyền được bảo lưu.', 'laca'); ?>
+				</p>
+			</div>
+
+		</div>
+	</div>
+	<!-- END footer__main -->
 </footer>
 <!-- footer end -->
+
+<!-- FAB gọi nhanh -->
+<?php if ($footer_first_phone): ?>
+	<a class="footer__fab" href="tel:<?php echo esc_attr(preg_replace('/[^\d+]/', '', $footer_first_phone)); ?>" aria-label="<?php esc_attr_e('Gọi ngay', 'laca'); ?>">
+		<?php echo nkt_footer_icon('call'); ?>
+	</a>
+<?php endif; ?>
 
 </div><!-- barba container end -->
 </div>
 <!-- container-wrapper end -->
-
 
 <?php wp_footer(); ?>
 </body>
