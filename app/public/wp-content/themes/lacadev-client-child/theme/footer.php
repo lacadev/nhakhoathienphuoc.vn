@@ -171,7 +171,6 @@ if (!empty($footer_phones) && is_array($footer_phones)) {
 	</a>
 <?php endif; ?>
 
-</div><!-- barba container end -->
 </div>
 <!-- container-wrapper end -->
 

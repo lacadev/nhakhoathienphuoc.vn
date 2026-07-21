@@ -20,16 +20,7 @@ if (!defined('ABSPATH')) {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
-
-	<!-- Font: Manrope (theo design Deep Green). Icon dùng SVG inline
-	     (xem block-gutenberg/utils/icons.php) — không dùng font ligature
-	     Material Symbols nữa vì phụ thuộc CDN ngoài, lỗi tải là mất icon. -->
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
 	<?php wp_head(); ?>
-
 	<link rel="apple-touch-icon" sizes="57x57" href="<?php theAsset('favicon/apple-icon-57x57.png'); ?>">
 	<link rel="apple-touch-icon" sizes="60x60" href="<?php theAsset('favicon/apple-icon-60x60.png'); ?>">
 	<link rel="apple-touch-icon" sizes="72x72" href="<?php theAsset('favicon/apple-icon-72x72.png'); ?>">
@@ -109,7 +100,8 @@ if (!defined('ABSPATH')) {
 						?>
 						<a href="<?php echo esc_url(home_url('/')); ?>" class="header__logo-link">
 							<?php if ($logo_url): ?>
-								<img src="<?php echo esc_url($logo_url); ?>" class="header__logo-img" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
+								<img src="<?php echo esc_url($logo_url); ?>" class="header__logo-img"
+									alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
 							<?php endif; ?>
 							<span class="header__logo-text"><?php echo esc_html(get_bloginfo('name')); ?></span>
 						</a>
@@ -120,11 +112,11 @@ if (!defined('ABSPATH')) {
 						<?php
 						wp_nav_menu([
 							'theme_location' => 'main-menu',
-							'menu_class'     => 'header__menu-list',
-							'container'      => false,
-							'items_wrap'     => '<ul class="%2$s">%3$s</ul>',
-							'walker'         => new Laca_Menu_Walker(),
-							'fallback_cb'    => false,
+							'menu_class' => 'header__menu-list',
+							'container' => false,
+							'items_wrap' => '<ul class="%2$s">%3$s</ul>',
+							'walker' => new Laca_Menu_Walker(),
+							'fallback_cb' => false,
 						]);
 						?>
 					</nav>
@@ -135,10 +127,8 @@ if (!defined('ABSPATH')) {
 					</a>
 
 					<!-- Hamburger (mobile) -->
-					<div class="header__hamburger" id="btn-hamburger"
-						aria-label="<?php esc_attr_e('Mở menu', 'laca'); ?>"
-						role="button" tabindex="0"
-						aria-expanded="false" aria-controls="header-overlay">
+					<div class="header__hamburger" id="btn-hamburger" aria-label="<?php esc_attr_e('Mở menu', 'laca'); ?>"
+						role="button" tabindex="0" aria-expanded="false" aria-controls="header-overlay">
 						<span></span>
 						<span></span>
 						<span></span>
@@ -173,4 +163,3 @@ if (!defined('ABSPATH')) {
 				</div>
 			</header>
 		<?php endif; ?>
-		<div data-barba="container" data-barba-namespace="default">
