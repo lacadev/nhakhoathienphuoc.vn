@@ -40,7 +40,7 @@ $optionsPage = Container::make('theme_options', __('Laca Theme', 'laca'))
 
 		Field::make('html', 'info', __('', 'laca'))
 			->set_html('----<i> Information | Thông tin </i>----'),
-		
+
 		Field::make('text', 'address' . currentLanguage(), __('', 'laca'))->set_width(50)
 			->set_attribute('placeholder', 'Address | Địa chỉ'),
 		Field::make('textarea', 'googlemap' . currentLanguage(), __('', 'laca'))
@@ -50,20 +50,20 @@ $optionsPage = Container::make('theme_options', __('Laca Theme', 'laca'))
 			->set_layout('tabbed-vertical')
 			->add_fields([
 				Field::make('text', 'name', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'Tên hotline'),
+					->set_attribute('placeholder', 'Tên hotline'),
 				Field::make('text', 'phone', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'Số điện thoại'),
+					->set_attribute('placeholder', 'Số điện thoại'),
 			])->set_header_template('<% if (name) { %><%- name %><% } %>'),
-		
+
 		Field::make('complex', 'address_locations' . currentLanguage(), __('Địa điểm', 'laca'))->set_width(50)
 			->set_layout('tabbed-vertical')
 			->add_fields([
 				Field::make('text', 'branch', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'Branch | Chi nhánh'),
+					->set_attribute('placeholder', 'Branch | Chi nhánh'),
 				Field::make('textarea', 'address', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'Address | Địa chỉ'),
+					->set_attribute('placeholder', 'Address | Địa chỉ'),
 			])->set_header_template('<% if (branch) { %><%- branch %><% } %>'),
-		
+
 		Field::make('text', 'email' . currentLanguage(), __('', 'laca'))->set_width(33.33)
 			->set_attribute('placeholder', 'Email'),
 		Field::make('text', 'phone_number' . currentLanguage(), __('', 'laca'))->set_width(33.33)
@@ -97,10 +97,10 @@ $optionsPage = Container::make('theme_options', __('Laca Theme', 'laca'))
 	->add_tab(__('AI Translation | Dịch thuật AI', 'laca'), [
 		Field::make('html', 'ai_intro', __('', 'laca'))
 			->set_html('Cấu hình API Key để kích hoạt tính năng tự động dịch nội dung bằng trí tuệ nhân tạo. Bạn nên ưu tiên dùng Gemini hoặc Groq vì có gói miễn phí rất tốt.'),
-		
+
 		Field::make('text', 'ai_gemini_key', __('Gemini API Key', 'laca'))
 			->set_help_text('Model: Gemini 1.5 Pro/Flash. Lấy tại: <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>'),
-		
+
 		Field::make('text', 'ai_groq_key', __('Groq API Key', 'laca'))
 			->set_help_text('Model: Llama 3/3.1. Lấy tại: <a href="https://console.groq.com/keys" target="_blank">Groq Console</a>'),
 
@@ -116,98 +116,12 @@ $optionsPage = Container::make('theme_options', __('Laca Theme', 'laca'))
 		Field::make('select', 'ai_default_provider', __('Bô xử lý ưu tiên', 'laca'))
 			->set_options([
 				'gemini' => 'Google Gemini (Khuyên dùng)',
-				'groq'   => 'Groq (Llama 3 - Tốc độ cực nhanh)',
+				'groq' => 'Groq (Llama 3 - Tốc độ cực nhanh)',
 				'deepseek' => 'DeepSeek (Giá rẻ/Chất lượng cao)',
 				'openai' => 'OpenAI GPT',
 				'anthropic' => 'Anthropic Claude',
 			])
 			->set_default_value('gemini'),
-	])
-
-	->add_tab(__('Tuỳ chỉnh giao diện (Child)', 'laca'), [
-		Field::make('textarea', 'footer_contact_budget_options', __('Ngân sách form liên hệ footer', 'laca'))
-		->set_width(50)
-			->set_help_text(__('Mỗi dòng là một lựa chọn ngân sách.', 'laca'))
-			->set_default_value("Dưới 1 tỷ\n1 - 3 tỷ\n3 - 5 tỷ\n5 - 10 tỷ\nTrên 10 tỷ"),
-		Field::make('image', 'footer_contact_image', __('Hình ảnh form liên hệ footer', 'laca'))
-		->set_width(50)
-			->set_help_text(__('Ảnh hiển thị bên phải form liên hệ ở footer.', 'laca')),
-	])
-
-	->add_tab(__('Footer menu(Child)', 'laca'), [
-		Field::make('html', 'footer_menu_intro', __('', 'laca'))
-			->set_html('<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;padding:14px 16px;margin:8px 0"><p style="margin:0 0 8px;font-weight:600;color:#0369a1">🔧 Footer menu (Child)</p><p style="margin:0;font-size:13px;color:#374151">Cấu hình 5 cột menu ở footer: Về chúng tôi, Dịch vụ, Chính sách, Showroom & Nhà máy, Dự án tiêu biểu và Đối tác. Nội dung khai báo ở đây sẽ hiển thị ở cuối mọi trang trên website.</p></div>'),
-
-		//Menu Về chúng tôi
-		Field::make('html', 'about_footer', __('', 'laca'))
-			->set_html('----<i> MENU VỀ CHÚNG TÔI </i>----'),
-		Field::make('text', 'about_footer_title' . currentLanguage(), __('', 'laca'))
-			->set_attribute('placeholder', 'Tiêu đề menu'),
-		Field::make('text', 'company' . currentLanguage(), __('', 'laca'))->set_width(50)
-			->set_attribute('placeholder', 'Company | Công ty'),
-		
-
-		// Menu dịch vụ
-		Field::make('html', 'service_footer', __('', 'laca'))
-			->set_html('----<i> MENU DỊCH VỤ </i>----'),
-		Field::make('text', 'service_footer_title' . currentLanguage(), __('', 'laca'))
-			->set_attribute('placeholder', 'Tiêu đề menu'),
-		Field::make('complex', 'service_footer_items' . currentLanguage(), __('', 'laca'))
-			->set_layout('tabbed-horizontal')
-			->add_fields([
-				Field::make('text', 'name', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'Tên dịch vụ'),
-				Field::make('text', 'url', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'URL'),
-			])->set_header_template('<% if (name) { %><%- name %><% } %>'),
-
-		//Menu chính sách
-		Field::make('html', 'policy_footer', __('', 'laca'))
-			->set_html('----<i> MENU CHÍNH SÁCH </i>----'),
-		Field::make('text', 'policy_footer_title' . currentLanguage(), __('', 'laca'))
-			->set_attribute('placeholder', 'Tiêu đề menu'),
-		Field::make('complex', 'policy_footer_items' . currentLanguage(), __('', 'laca'))
-			->set_layout('tabbed-horizontal')
-			->add_fields([
-				Field::make('text', 'name', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'Tên chính sách'),
-				Field::make('text', 'url', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'URL'),
-			])->set_header_template('<% if (name) { %><%- name %><% } %>'),
-
-		//Menu Showroom & Nhà máy
-		Field::make('html', 'showroom_factory_footer', __('', 'laca'))
-			->set_html('----<i> MENU SHOWROOM & NHÀ MÁY </i>----'),
-		Field::make('text', 'showroom_factory_footer_title' . currentLanguage(), __('', 'laca'))
-			->set_attribute('placeholder', 'Tiêu đề menu'),
-
-		//Menu Dự án tiêu biểu
-		Field::make('html', 'project_footer', __('', 'laca'))
-			->set_html('----<i> MENU DỰ ÁN TIÊU BIỂU </i>----'),
-		Field::make('text', 'project_footer_title' . currentLanguage(), __('', 'laca'))
-			->set_attribute('placeholder', 'Tiêu đề menu'),
-		Field::make('complex', 'project_footer_items' . currentLanguage(), __('', 'laca'))
-			->set_layout('tabbed-horizontal')
-			->add_fields([
-				Field::make('text', 'name', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'Tên dự án'),
-				Field::make('text', 'url', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'URL'),
-			])->set_header_template('<% if (name) { %><%- name %><% } %>'),
-
-		//Menu đối tác
-		Field::make('html', 'partner_footer', __('', 'laca'))
-			->set_html('----<i> MENU ĐỐI TÁC </i>----'),
-		Field::make('text', 'partner_footer_title' . currentLanguage(), __('', 'laca'))
-			->set_attribute('placeholder', 'Tiêu đề menu'),
-		Field::make('complex', 'partner_footer_items' . currentLanguage(), __('', 'laca'))
-			->set_layout('tabbed-horizontal')
-			->add_fields([
-				Field::make('text', 'name', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'Tên đối tác'),
-				Field::make('text', 'url', __('', 'laca'))->set_width(50)
-				->set_attribute('placeholder', 'URL'),
-			])->set_header_template('<% if (name) { %><%- name %><% } %>'),
 	])
 
 	->add_tab(__('🛒 Block Marketplace', 'laca'), [
