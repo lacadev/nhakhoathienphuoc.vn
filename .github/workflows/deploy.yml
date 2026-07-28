@@ -68,3 +68,4 @@ jobs:
             wp-trackback.php
             wp-login.php
             xmlrpc.php
+            index.php
