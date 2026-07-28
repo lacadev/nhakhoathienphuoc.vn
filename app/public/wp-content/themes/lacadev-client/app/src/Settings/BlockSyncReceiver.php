@@ -55,7 +55,7 @@ class BlockSyncReceiver
         }
 
         // --- Validate payload ---
-        $blockName = sanitize_key($request->get_param('block_name') ?? '');
+        $blockName = self::sanitizeBlockRelativePath((string) ($request->get_param('block_name') ?? ''));
         $version   = sanitize_text_field($request->get_param('version') ?? '1.0.0');
         $files     = $request->get_param('files') ?? [];
 
@@ -122,7 +122,7 @@ class BlockSyncReceiver
         // Nếu hub hỏi kèm ?block=xxx, trả thêm checksum nội dung hiện tại của
         // block đó trên đĩa — dùng để hub phát hiện site khách đã tự sửa file
         // trước khi ghi đè (xem BlockSyncSender::detectConflict() phía hub).
-        $blockName = sanitize_key($request->get_param('block') ?? '');
+        $blockName = self::sanitizeBlockRelativePath((string) ($request->get_param('block') ?? ''));
         if (!empty($blockName)) {
             $blockDir = dirname(get_stylesheet_directory()) . '/block-gutenberg/' . $blockName;
             $response['checksum'] = is_dir($blockDir) ? $this->computeChecksum($blockDir) : null;
@@ -148,6 +148,22 @@ class BlockSyncReceiver
     }
 
     /**
+     * Làm sạch "block relative path" — tên block phẳng (không "/") hoặc
+     * "{bucket}/{block}" (đúng 1 dấu "/"). Dùng thay cho sanitize_key() vì
+     * sanitize_key() xoá sạch dấu "/" và sẽ phá path có bucket.
+     */
+    private static function sanitizeBlockRelativePath(string $raw): string
+    {
+        $raw = strtolower(trim($raw));
+        $segments = array_filter(explode('/', $raw), static fn ($s) => $s !== '');
+        $segments = array_map(static fn ($s) => preg_replace('/[^a-z0-9_-]/', '', $s), $segments);
+        $segments = array_filter($segments, static fn ($s) => $s !== '' && $s !== '.' && $s !== '..');
+        $segments = array_slice($segments, 0, 2);
+
+        return implode('/', $segments);
+    }
+
+    /**
      * Giải mã base64 và ghi files vào block directory.
      * $files = ['relative/path' => 'base64_encoded_content']
      *
@@ -162,6 +178,17 @@ class BlockSyncReceiver
         if ($realStyleDir === false) {
             // Thư mục chưa tồn tại - sẽ được tạo khi ghi file đầu tiên
             $realStyleDir = $childBlockGutenberg;
+        }
+
+        // Xóa sạch thư mục block CŨ (nếu có) trước khi ghi bản mới. Nếu
+        // không làm vậy, file bị xóa/đổi tên giữa các phiên bản (vd refactor
+        // block) sẽ nằm lại trên đĩa mãi mãi — khiến checksum tính từ disk
+        // (getStatus()) không bao giờ khớp với checksum hub lưu từ đúng
+        // payload vừa push, gây báo nhầm "site khách đã tự sửa" ở lần push
+        // kế tiếp dù khách không hề đụng vào file nào.
+        $realBlockDir = realpath($blockDir);
+        if ($realBlockDir !== false && str_starts_with($realBlockDir, (string) $realStyleDir)) {
+            $this->deleteDirectoryContents($realBlockDir);
         }
 
         foreach ($files as $relativePath => $base64Content) {
@@ -227,6 +254,33 @@ class BlockSyncReceiver
         ksort($hashes);
 
         return md5((string) wp_json_encode($hashes));
+    }
+
+    /**
+     * Xóa toàn bộ nội dung 1 thư mục (đệ quy) nhưng giữ lại thư mục gốc.
+     * Chỉ gọi sau khi đã xác nhận $dir nằm trong phạm vi an toàn
+     * block-gutenberg/ của child theme (xem writeBlockFiles()).
+     */
+    private function deleteDirectoryContents(string $dir): void
+    {
+        $items = scandir($dir);
+        if ($items === false) {
+            return;
+        }
+
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+
+            $path = $dir . '/' . $item;
+            if (is_dir($path)) {
+                $this->deleteDirectoryContents($path);
+                @rmdir($path);
+            } else {
+                @unlink($path);
+            }
+        }
     }
 
     /**
