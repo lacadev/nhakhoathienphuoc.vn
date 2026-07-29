@@ -103,7 +103,6 @@ if (!defined('ABSPATH')) {
 								<img src="<?php echo esc_url($logo_url); ?>" class="header__logo-img"
 									alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
 							<?php endif; ?>
-							<span class="header__logo-text"><?php echo esc_html(get_bloginfo('name')); ?></span>
 						</a>
 					</div>
 
