@@ -84,6 +84,34 @@ $optionsPage = Container::make('theme_options', __('Laca Theme', 'laca'))
 			->set_attribute('placeholder', 'youtube'),
 		Field::make('text', 'zalo' . currentLanguage(), __('', 'laca'))->set_width(50)
 			->set_attribute('placeholder', 'zalo'),
+
+		Field::make('html', 'footer_menu_info', __('', 'laca'))
+			->set_html('----<i> Footer | Chân trang </i>----'),
+
+		Field::make('textarea', 'company' . currentLanguage(), __('', 'laca'))
+			->set_attribute('placeholder', 'Company description | Mô tả ngắn về công ty (hiển thị dưới logo ở footer)'),
+
+		Field::make('text', 'service_footer_title' . currentLanguage(), __('', 'laca'))->set_width(50)
+			->set_attribute('placeholder', 'Service column title | Tiêu đề cột Dịch Vụ (mặc định: "Dịch Vụ")'),
+		Field::make('complex', 'service_footer_items' . currentLanguage(), __('Dịch Vụ', 'laca'))->set_width(50)
+			->set_layout('tabbed-vertical')
+			->add_fields([
+				Field::make('text', 'name', __('', 'laca'))->set_width(50)
+					->set_attribute('placeholder', 'Tên mục'),
+				Field::make('text', 'url', __('', 'laca'))->set_width(50)
+					->set_attribute('placeholder', 'Đường dẫn (URL)'),
+			])->set_header_template('<% if (name) { %><%- name %><% } %>'),
+
+		Field::make('text', 'policy_footer_title' . currentLanguage(), __('', 'laca'))->set_width(50)
+			->set_attribute('placeholder', 'Policy column title | Tiêu đề cột Liên Kết (mặc định: "Liên Kết")'),
+		Field::make('complex', 'policy_footer_items' . currentLanguage(), __('Liên Kết', 'laca'))->set_width(50)
+			->set_layout('tabbed-vertical')
+			->add_fields([
+				Field::make('text', 'name', __('', 'laca'))->set_width(50)
+					->set_attribute('placeholder', 'Tên mục'),
+				Field::make('text', 'url', __('', 'laca'))->set_width(50)
+					->set_attribute('placeholder', 'Đường dẫn (URL)'),
+			])->set_header_template('<% if (name) { %><%- name %><% } %>'),
 	])
 
 	->add_tab(__('Scripts', 'laca'), [
