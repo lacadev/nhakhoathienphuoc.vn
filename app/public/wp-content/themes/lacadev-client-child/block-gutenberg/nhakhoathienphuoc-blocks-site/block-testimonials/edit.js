@@ -13,6 +13,7 @@ import {
 	RangeControl,
 	Button,
 	ColorPicker,
+	ToggleControl,
 } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 import { useInserterPreview, BlockPreviewMock } from '../../utils/preview';
@@ -78,6 +79,12 @@ export default function Edit( { attributes, setAttributes } ) {
 		locationColor,
 		cardBgColor,
 		borderColor,
+		showGoogleReview,
+		googleReviewTitle,
+		googleReviewRating,
+		googleReviewCount,
+		googleReviewButtonText,
+		googleReviewUrl,
 	} = attributes;
 
 	const blockProps = useBlockProps( {
@@ -216,6 +223,64 @@ export default function Edit( { attributes, setAttributes } ) {
 						{ __( '+ Thêm đánh giá', 'laca' ) }
 					</Button>
 				</div>
+
+				<PanelBody
+					title={ __( 'Đánh giá Google', 'laca' ) }
+					initialOpen={ false }
+				>
+					<ToggleControl
+						label={ __( 'Hiển thị thẻ đánh giá Google', 'laca' ) }
+						checked={ !! showGoogleReview }
+						onChange={ ( v ) =>
+							setAttributes( { showGoogleReview: v } )
+						}
+					/>
+
+					{ showGoogleReview && (
+						<>
+							<TextControl
+								label={ __( 'Tiêu đề', 'laca' ) }
+								value={ googleReviewTitle || '' }
+								onChange={ ( v ) =>
+									setAttributes( { googleReviewTitle: v } )
+								}
+							/>
+							<TextControl
+								label={ __( 'Điểm đánh giá', 'laca' ) }
+								value={ googleReviewRating || '' }
+								onChange={ ( v ) =>
+									setAttributes( { googleReviewRating: v } )
+								}
+							/>
+							<TextControl
+								label={ __( 'Số lượt đánh giá', 'laca' ) }
+								value={ googleReviewCount || '' }
+								onChange={ ( v ) =>
+									setAttributes( { googleReviewCount: v } )
+								}
+							/>
+							<TextControl
+								label={ __( 'Chữ trên nút', 'laca' ) }
+								value={ googleReviewButtonText || '' }
+								onChange={ ( v ) =>
+									setAttributes( {
+										googleReviewButtonText: v,
+									} )
+								}
+							/>
+							<TextControl
+								label={ __(
+									'Đường dẫn Google Review',
+									'laca'
+								) }
+								value={ googleReviewUrl || '' }
+								onChange={ ( v ) =>
+									setAttributes( { googleReviewUrl: v } )
+								}
+							/>
+						</>
+					) }
+				</PanelBody>
 
 				<PanelBody
 					title={ __( 'Giao diện', 'laca' ) }

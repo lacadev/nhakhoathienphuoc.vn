@@ -82,6 +82,30 @@
             "type": "boolean",
             "default": false
         },
+        "showGoogleReview": {
+            "type": "boolean",
+            "default": true
+        },
+        "googleReviewTitle": {
+            "type": "string",
+            "default": "Đánh giá trên Google"
+        },
+        "googleReviewRating": {
+            "type": "string",
+            "default": "5.0"
+        },
+        "googleReviewCount": {
+            "type": "string",
+            "default": "300+ đánh giá"
+        },
+        "googleReviewButtonText": {
+            "type": "string",
+            "default": "Xem tất cả đánh giá"
+        },
+        "googleReviewUrl": {
+            "type": "string",
+            "default": ""
+        },
         "heading": {
             "type": "string",
             "default": ""

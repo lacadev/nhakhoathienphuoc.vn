@@ -19,9 +19,18 @@ $location_color = $attributes['locationColor'] ?? '#78716c';
 $card_bg_color  = $attributes['cardBgColor']   ?? '#ffffff';
 $border_color   = $attributes['borderColor']   ?? '#e1e3e1';
 
+$show_google_review        = $attributes['showGoogleReview']       ?? true;
+$google_review_title       = $attributes['googleReviewTitle']      ?? '';
+$google_review_rating      = $attributes['googleReviewRating']     ?? '';
+$google_review_count       = $attributes['googleReviewCount']      ?? '';
+$google_review_button_text = $attributes['googleReviewButtonText'] ?? '';
+$google_review_url         = $attributes['googleReviewUrl']        ?? '';
+
 $wrapper_attrs = get_block_wrapper_attributes( [
     'class' => 'block-testimonials',
 ] );
+
+$grid_class = 'block-testimonials__grid' . ( $show_google_review ? ' block-testimonials__grid--with-google' : '' );
 ?>
 
 <section <?php echo $wrapper_attrs; ?>>
@@ -30,7 +39,7 @@ $wrapper_attrs = get_block_wrapper_attributes( [
             <h2 class="block-testimonials__title"><?php echo esc_html( $section_title ); ?></h2>
         <?php endif; ?>
 
-        <div class="block-testimonials__grid">
+        <div class="<?php echo esc_attr( $grid_class ); ?>">
             <?php foreach ( $testimonials as $testimonial ) :
                 $quote      = $testimonial['quote']         ?? '';
                 $name       = $testimonial['name']           ?? '';
@@ -75,6 +84,41 @@ $wrapper_attrs = get_block_wrapper_attributes( [
                     </div>
                 </div>
             <?php endforeach; ?>
+
+            <?php if ( $show_google_review ) : ?>
+                <div
+                    class="block-testimonials__google-card"
+                    style="background-color:<?php echo esc_attr( $card_bg_color ); ?>;border-color:<?php echo esc_attr( $border_color ); ?>;"
+                >
+                    <div class="block-testimonials__google-header">
+                        <?php echo lcdc_google_icon(); ?>
+                        <?php if ( ! empty( $google_review_title ) ) : ?>
+                            <span class="block-testimonials__google-title"><?php echo esc_html( $google_review_title ); ?></span>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="block-testimonials__google-rating">
+                        <?php if ( ! empty( $google_review_rating ) ) : ?>
+                            <span class="block-testimonials__google-score"><?php echo esc_html( $google_review_rating ); ?></span>
+                        <?php endif; ?>
+                        <span class="block-testimonials__google-stars" style="color:<?php echo esc_attr( $star_color ); ?>;">
+                            <?php for ( $i = 0; $i < 5; $i++ ) : ?>
+                                <?php echo lcdc_dental_icon( 'star' ); ?>
+                            <?php endfor; ?>
+                        </span>
+                    </div>
+
+                    <?php if ( ! empty( $google_review_count ) ) : ?>
+                        <p class="block-testimonials__google-count"><?php echo esc_html( $google_review_count ); ?></p>
+                    <?php endif; ?>
+
+                    <?php if ( ! empty( $google_review_button_text ) ) : ?>
+                        <a class="block-testimonials__google-btn" href="<?php echo esc_url( $google_review_url ?: '#' ); ?>" target="_blank" rel="noopener noreferrer">
+                            <?php echo esc_html( $google_review_button_text ); ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
