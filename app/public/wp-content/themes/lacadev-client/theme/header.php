@@ -13,12 +13,12 @@ if (!defined('ABSPATH')) {
 ?>
 
 <!DOCTYPE html>
-<html <?php language_attributes(); ?> data-theme="light">
+<html <?php language_attributes(); ?>>
 
 <head>
-	<?php wp_head(); ?>
+    <?php wp_head(); ?>
 </head>
 
 <body <?php body_class(); ?>>
-	<div class="wrapper">
+    <div class="wrapper">
         <div>
