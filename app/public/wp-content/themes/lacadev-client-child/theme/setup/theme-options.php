@@ -14,7 +14,7 @@ use Carbon_Fields\Field\Field;
 
 $optionsPage = Container::make('theme_options', __('Laca Theme', 'laca'))
 	->set_page_file('app-theme-options.php')
-	->set_page_menu_position(3)
+	->set_page_menu_position(3.1)
 	->add_tab(__('Branding | Thương hiệu', 'laca'), [
 		Field::make('html', 'branding_intro', __('', 'laca'))
 			->set_html('<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;padding:14px 16px;margin:8px 0"><p style="margin:0 0 8px;font-weight:600;color:#0369a1">🔧 Thương hiệu</p><p style="margin:0;font-size:13px;color:#374151">Thiết lập màu sắc và logo dùng chung cho toàn bộ website. Các màu và logo ở đây sẽ hiển thị đồng bộ trên mọi trang, mọi giao diện của site.</p></div>'),
@@ -159,4 +159,39 @@ $optionsPage = Container::make('theme_options', __('Laca Theme', 'laca'))
 					? \App\Settings\BlockMarketplace::renderPage()
 					: '<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:14px 16px;color:#991b1b">Không tìm thấy class BlockMarketplace.</div>';
 			}),
+	]);
+
+/**
+ * Bảng Giá — menu riêng, quản lý danh mục dịch vụ (tab) + từng dịch vụ
+ * (dịch vụ/mô tả/đơn vị/giá/bảo hành). Dùng chung toàn site — block
+ * "Bảng Giá" chỉ đọc và hiển thị, không chọn nguồn. Các thông tin bổ sung
+ * (cam kết, bảo hành, tư vấn, CTA...) được nhập ngay trong block, không ở đây.
+ */
+$pricingOptionsPage = Container::make('theme_options', __('Bảng Giá', 'laca'))
+	->set_page_file('app-pricing-options.php')
+	->set_page_menu_position(3.2)
+	->add_tab(__('Danh mục & Dịch vụ', 'laca'), [
+		Field::make('html', 'pricing_intro', __('', 'laca'))
+			->set_html('<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;padding:14px 16px;margin:8px 0"><p style="margin:0 0 8px;font-weight:600;color:#0369a1">🔧 Bảng Giá</p><p style="margin:0;font-size:13px;color:#374151">Mỗi danh mục là 1 tab trên bảng giá (VD: Răng sứ thẩm mỹ). Trong mỗi danh mục, thêm từng dịch vụ với đầy đủ mô tả/đơn vị/giá/bảo hành. Dùng block "Bảng Giá" để hiển thị dữ liệu này ở bất kỳ trang nào.</p></div>'),
+
+		Field::make('complex', 'pricing_categories', __('Danh mục dịch vụ', 'laca'))
+			->set_layout('tabbed-vertical')
+			->add_fields([
+				Field::make('text', 'category_name', __('Tên danh mục (tab)', 'laca'))
+					->set_attribute('placeholder', 'VD: Răng sứ thẩm mỹ'),
+				Field::make('complex', 'category_services', __('Dịch vụ', 'laca'))
+					->set_layout('tabbed-vertical')
+					->add_fields([
+						Field::make('text', 'service_name', __('Tên dịch vụ', 'laca'))->set_width(50),
+						Field::make('text', 'service_unit', __('Đơn vị', 'laca'))->set_width(50)
+							->set_attribute('placeholder', 'VD: Răng'),
+						Field::make('text', 'service_desc', __('Mô tả', 'laca')),
+						Field::make('text', 'service_price', __('Giá (VNĐ)', 'laca'))->set_width(50)
+							->set_attribute('placeholder', 'VD: 1.500.000'),
+						Field::make('text', 'service_warranty', __('Bảo hành', 'laca'))->set_width(50)
+							->set_attribute('placeholder', 'VD: 5 năm'),
+					])
+					->set_header_template('<% if (service_name) { %><%- service_name %><% } %>'),
+			])
+			->set_header_template('<% if (category_name) { %><%- category_name %><% } %>'),
 	]);

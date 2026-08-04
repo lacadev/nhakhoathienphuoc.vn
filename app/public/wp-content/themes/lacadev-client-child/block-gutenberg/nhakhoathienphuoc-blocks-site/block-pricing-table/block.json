@@ -1,0 +1,89 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "lacadev/pricing-table-block",
+    "version": "1.0.0",
+    "title": "Pricing Table Block",
+    "category": "site-nhakhoathienphuoc",
+    "description": "Hiển thị bảng giá dịch vụ (tab danh mục + bảng dịch vụ) lấy dữ liệu từ trang quản trị \"Bảng Giá\". Thông tin bổ sung (cam kết, bảo hành, tư vấn, CTA...) nhập ngay trong block.",
+    "keywords": [
+        "bảng giá",
+        "pricing",
+        "dịch vụ",
+        "price table"
+    ],
+    "textdomain": "laca",
+    "supports": {
+        "html": false,
+        "align": [
+            "wide",
+            "full"
+        ]
+    },
+    "attributes": {
+        "sectionBadge": {
+            "type": "string",
+            "default": ""
+        },
+        "sectionTitle": {
+            "type": "string",
+            "default": "Bảng giá dịch vụ"
+        },
+        "subtitle": {
+            "type": "string",
+            "default": "Minh bạch – Hợp lý – Không phát sinh chi phí"
+        },
+        "trustBadges": {
+            "type": "array",
+            "default": [
+                {
+                    "icon": { "type": "svg", "svg": "", "imageId": 0, "imageUrl": "" },
+                    "title": "Cam kết chính hãng",
+                    "description": "100% vật liệu chính hãng, nguồn gốc rõ ràng"
+                },
+                {
+                    "icon": { "type": "svg", "svg": "", "imageId": 0, "imageUrl": "" },
+                    "title": "Bảo hành uy tín",
+                    "description": "Chế độ bảo hành minh bạch, hỗ trợ lâu dài"
+                },
+                {
+                    "icon": { "type": "svg", "svg": "", "imageId": 0, "imageUrl": "" },
+                    "title": "Tư vấn miễn phí",
+                    "description": "Khám và tư vấn miễn phí cùng chuyên gia"
+                }
+            ]
+        },
+        "disclaimerText": {
+            "type": "string",
+            "default": "*Bảng giá trên mang tính chất tham khảo, giá cụ thể sẽ được bác sĩ tư vấn sau khi thăm khám."
+        },
+        "ctaText": {
+            "type": "string",
+            "default": "NHẬN BÁO GIÁ CHÍNH XÁC"
+        },
+        "ctaLink": {
+            "type": "string",
+            "default": ""
+        },
+        "bgColor": {
+            "type": "string",
+            "default": "#ffffff"
+        },
+        "bgOpacity": {
+            "type": "number",
+            "default": 100
+        },
+        "__isPreview": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "editorScript": "block-block-pricing-table-editor",
+    "style": "block-block-pricing-table",
+    "example": {
+        "viewportWidth": 800,
+        "attributes": {
+            "__isPreview": true
+        }
+    }
+}

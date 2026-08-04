@@ -4,7 +4,6 @@
 body:not(.wp-admin) {
   font-family: $mainFont !important;
   background-color: $bgColor;
-  color: #fff !important;
   line-height: 1.2 !important;
 }
 
@@ -46,8 +45,68 @@ figcaption {
 
 .page-hero {
   padding: 3rem 0;
+  background: linear-gradient(135deg, $primaryColor 0%, #081a0d 100%);
 
   @include maxWidth($md) {
-    padding: 0 0 2rem;
+    padding: 2rem 0;
+  }
+
+  h1.page-title {
+    color: #fff;
+  }
+
+  .page-excerpt {
+    color: rgba(255, 255, 255, 0.75);
+
+    .meta-item {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+  }
+}
+
+.breadcrumb-trail {
+  margin-top: 0.75rem;
+  font-size: rem(13);
+  color: rgba(255, 255, 255, 0.55);
+
+  &__link {
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  &__sep {
+    margin: 0 0.4rem;
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  &__current {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  // rank_math_the_breadcrumbs() render sẵn <p id="rank-math-breadcrumb"> +
+  // <a>/<span> bên trong — style theo cấu trúc thật của Rank Math thay vì
+  // class tự đặt (chỉ áp dụng khi module Breadcrumbs bật, xem breadcrumb.php).
+  #rank-math-breadcrumb {
+    a {
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    .separator {
+      margin: 0 0.4rem;
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .last {
+      color: rgba(255, 255, 255, 0.85);
+    }
   }
 }

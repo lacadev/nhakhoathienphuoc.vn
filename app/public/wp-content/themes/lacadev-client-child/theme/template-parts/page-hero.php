@@ -69,17 +69,13 @@ if (is_post_type_archive('project')) {
     <div class="container-fluid">
         <div class="hero-content">
             <h1 class="<?php echo esc_attr($title_class); ?>" data-aos="fade-up"><?php echo esc_html($title); ?></h1>
-            <?php if ($excerpt) : ?>
+            <?php if ($excerpt): ?>
                 <div class="page-excerpt">
                     <?php echo wp_kses_post($excerpt); ?>
-                    <?php if (!is_archive() && !is_home()) : ?>
-                        <div class="meta-item" style="margin-top: 10px; font-size: 14px; color: var(--laca-text-muted);">
-                            <span class="dashicons dashicons-visibility" style="font-size: 14px; width: 14px; height: 14px; margin-right: 4px; vertical-align: middle;"></span>
-                            <?php theViewCount(); ?> lượt xem
-                        </div>
-                    <?php endif; ?>
                 </div>
             <?php endif; ?>
+
+            <?php get_template_part('template-parts/breadcrumb'); ?>
         </div>
     </div>
 </div>
