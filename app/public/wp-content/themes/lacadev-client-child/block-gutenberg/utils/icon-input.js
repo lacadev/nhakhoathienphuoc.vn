@@ -12,7 +12,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { BaseControl, Button, ButtonGroup, TextareaControl } from '@wordpress/components';
+import {
+	BaseControl,
+	Button,
+	ButtonGroup,
+	TextareaControl,
+} from '@wordpress/components';
 
 export function IconInput( { icon, onChange, label } ) {
 	const type = icon?.type || 'svg';
@@ -40,7 +45,7 @@ export function IconInput( { icon, onChange, label } ) {
 				<>
 					<TextareaControl
 						help={ __(
-							'Dán nguyên code <svg>...</svg> — vd lấy từ fonts.google.com/icons, chọn icon rồi bấm tab "SVG" (không phải phần font-embed). Hỗ trợ SVG đơn giản (path/circle/rect/line/polyline/polygon), không hỗ trợ gradient/mask/filter.',
+							'Dán nguyên code <svg>…</svg> — vd lấy từ fonts.google.com/icons, chọn icon rồi bấm tab "SVG" (không phải phần font-embed). Hỗ trợ SVG đơn giản (path/circle/rect/line/polyline/polygon), không hỗ trợ gradient/mask/filter.',
 							'laca'
 						) }
 						value={ icon?.svg || '' }

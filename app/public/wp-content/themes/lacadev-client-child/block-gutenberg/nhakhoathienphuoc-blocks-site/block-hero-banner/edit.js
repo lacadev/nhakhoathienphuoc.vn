@@ -138,9 +138,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					<TextControl
 						label={ __( 'Badge', 'laca' ) }
 						value={ badgeText }
-						onChange={ ( v ) =>
-							setAttributes( { badgeText: v } )
-						}
+						onChange={ ( v ) => setAttributes( { badgeText: v } ) }
 					/>
 					<TextControl
 						label={ __( 'Headline dòng 1', 'laca' ) }
@@ -150,10 +148,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 					/>
 					<TextControl
-						label={ __(
-							'Headline dòng 2 (màu primary)',
-							'laca'
-						) }
+						label={ __( 'Headline dòng 2 (màu primary)', 'laca' ) }
 						value={ headlineLine2 }
 						onChange={ ( v ) =>
 							setAttributes( { headlineLine2: v } )
@@ -254,9 +249,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					<TextControl
 						label={ __( 'Nội dung rating', 'laca' ) }
 						value={ ratingText }
-						onChange={ ( v ) =>
-							setAttributes( { ratingText: v } )
-						}
+						onChange={ ( v ) => setAttributes( { ratingText: v } ) }
 					/>
 				</PanelBody>
 
@@ -292,7 +285,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						defaultValue="#f2f4f2"
 					/>
 					<p style={ { marginTop: 12, marginBottom: 4 } }>
-						{ __( 'Màu primary (headline dòng 2, icon, CTA)', 'laca' ) }
+						{ __(
+							'Màu primary (headline dòng 2, icon, CTA)',
+							'laca'
+						) }
 					</p>
 					<ColorPicker
 						color={ primaryColor }

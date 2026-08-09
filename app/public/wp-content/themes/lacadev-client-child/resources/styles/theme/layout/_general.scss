@@ -47,10 +47,6 @@ figcaption {
   padding: 3rem 0;
   background: linear-gradient(135deg, $primaryColor 0%, #081a0d 100%);
 
-  @include maxWidth($md) {
-    padding: 2rem 0;
-  }
-
   h1.page-title {
     color: #fff;
   }
@@ -61,6 +57,10 @@ figcaption {
     .meta-item {
       color: rgba(255, 255, 255, 0.6) !important;
     }
+  }
+
+  @include maxWidth($md) {
+    padding: 2rem 0;
   }
 }
 

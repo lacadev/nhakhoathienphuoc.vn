@@ -547,10 +547,6 @@ body.menu-open {
     margin: 0;
     padding: 0;
 
-    @include minWidth($md) {
-      display: flex;
-    }
-
     .menu-item {
       > a {
         color: #40493d;
@@ -571,6 +567,10 @@ body.menu-open {
         font-weight: 700;
         border-bottom-color: $primaryColor;
       }
+    }
+
+    @include minWidth($md) {
+      display: flex;
     }
   }
 

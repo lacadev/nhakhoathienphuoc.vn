@@ -12,25 +12,27 @@ if (!defined('ABSPATH')) {
 /**
  * Define super users (Developers) who can see system menus and hidden users.
  */
-add_filter('lacadev_super_user_logins', function($logins) {
-    return ['lacadev']; // Add your developer username here
+add_filter('lacadev_super_user_logins', function ($logins) {
+    return ['lacadev', 'hagiang']; // Add your developer username here
 });
 
 /**
  * Inject night sky background to login page
  */
-add_action('login_header', function() {
+add_action('login_header', function () {
     ?>
     <div class="login-night-sky" aria-hidden="true">
         <div class="alp-stars">
-            <?php foreach (range(1, 80) as $i) : 
+            <?php foreach (range(1, 80) as $i):
                 $size = rand(15, 30) / 10;
                 $left = rand(0, 10000) / 100;
                 $top = rand(0, 10000) / 100;
                 $dur = rand(20, 50) / 10;
                 $delay = rand(0, 50) / 10;
-            ?>
-                <div class="alp-star" style="left:<?php echo $left; ?>%; top:<?php echo $top; ?>%; width:<?php echo $size; ?>px; height:<?php echo $size; ?>px; --d:<?php echo $dur; ?>s; animation-delay:<?php echo $delay; ?>s;"></div>
+                ?>
+                <div class="alp-star"
+                    style="left:<?php echo $left; ?>%; top:<?php echo $top; ?>%; width:<?php echo $size; ?>px; height:<?php echo $size; ?>px; --d:<?php echo $dur; ?>s; animation-delay:<?php echo $delay; ?>s;">
+                </div>
             <?php endforeach; ?>
         </div>
         <div class="alp-moon"></div>
@@ -41,7 +43,7 @@ add_action('login_header', function() {
 /**
  * Custom check for super user status
  */
-add_filter('lacadev_is_super_user', function($is_super, $current_user) {
+add_filter('lacadev_is_super_user', function ($is_super, $current_user) {
     // Developers are always super users regardless of role
     $super_logins = apply_filters('lacadev_super_user_logins', ['lacadev']);
     if (in_array($current_user->user_login, $super_logins, true)) {
@@ -233,36 +235,39 @@ add_action('after_switch_theme', function () {
 // =============================================================================
 // COMMENTS CALLBACK
 // =============================================================================
-function lacadev_custom_comments_callback( $comment, $args, $depth ) {
+function lacadev_custom_comments_callback($comment, $args, $depth)
+{
     $GLOBALS['comment'] = $comment;
-    
-    $tag = ( isset($args['style']) && 'b' === $args['style'] ) ? 'b' : 'li';
+
+    $tag = (isset($args['style']) && 'b' === $args['style']) ? 'b' : 'li';
     $add_below = 'div-comment';
     ?>
-    <<?php echo $tag; ?> <?php comment_class( empty( $args['has_children'] ) ? 'custom-comment' : 'parent custom-comment' ); ?> id="comment-<?php comment_ID(); ?>">
+    <<?php echo $tag; ?>
+        <?php comment_class(empty($args['has_children']) ? 'custom-comment' : 'parent custom-comment'); ?>
+        id="comment-<?php comment_ID(); ?>">
         <article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
             <div class="comment-meta">
                 <div class="comment-author vcard">
-                    <?php 
+                    <?php
                     $avatar_size = $args['avatar_size'] ?? 48;
-                    if ( 0 != $avatar_size ) {
-                        echo get_avatar( $comment, $avatar_size );
+                    if (0 != $avatar_size) {
+                        echo get_avatar($comment, $avatar_size);
                     }
                     ?>
-                    <?php printf( '<span class="author-name">%s</span>', get_comment_author_link( $comment ) ); ?>
+                    <?php printf('<span class="author-name">%s</span>', get_comment_author_link($comment)); ?>
                 </div><!-- .comment-author -->
 
                 <div class="comment-metadata">
-                    <a href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
-                        <time datetime="<?php comment_time( 'c' ); ?>">
-                            <?php printf( __( '%s ago', 'laca' ), human_time_diff( get_comment_time('U'), current_time('timestamp') ) ); ?>
+                    <a href="<?php echo esc_url(get_comment_link($comment, $args)); ?>">
+                        <time datetime="<?php comment_time('c'); ?>">
+                            <?php printf(__('%s ago', 'laca'), human_time_diff(get_comment_time('U'), current_time('timestamp'))); ?>
                         </time>
                     </a>
                 </div><!-- .comment-metadata -->
             </div><!-- .comment-meta -->
 
-            <?php if ( '0' == $comment->comment_approved ) : ?>
-            <p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'laca' ); ?></p>
+            <?php if ('0' == $comment->comment_approved): ?>
+                <p class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.', 'laca'); ?></p>
             <?php endif; ?>
 
             <div class="comment-content">
@@ -276,15 +281,15 @@ function lacadev_custom_comments_callback( $comment, $args, $depth ) {
                         $args,
                         array(
                             'add_below' => $add_below,
-                            'depth'     => $depth,
+                            'depth' => $depth,
                             'max_depth' => $args['max_depth'] ?? 5,
-                            'before'    => '<div class="reply">',
-                            'after'     => '</div>',
+                            'before' => '<div class="reply">',
+                            'after' => '</div>',
                         )
                     )
                 );
                 ?>
             </div>
         </article><!-- .comment-body -->
-    <?php
+        <?php
 }

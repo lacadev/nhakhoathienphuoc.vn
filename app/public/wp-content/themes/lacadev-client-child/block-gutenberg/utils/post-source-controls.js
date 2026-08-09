@@ -207,7 +207,10 @@ export function PostSourceControls( {
 									marginBottom: '6px',
 								} }
 							>
-								{ __( 'Chọn danh mục (bỏ trống = tất cả)', 'laca' ) }
+								{ __(
+									'Chọn danh mục (bỏ trống = tất cả)',
+									'laca'
+								) }
 							</p>
 							<div
 								style={ {
@@ -257,7 +260,10 @@ export function PostSourceControls( {
 								label: __( 'Menu Order', 'laca' ),
 								value: 'menu_order',
 							},
-							{ label: __( 'Ngẫu nhiên', 'laca' ), value: 'rand' },
+							{
+								label: __( 'Ngẫu nhiên', 'laca' ),
+								value: 'rand',
+							},
 						] }
 						onChange={ ( v ) => setAttributes( { orderBy: v } ) }
 					/>
@@ -318,7 +324,9 @@ export function PostSourceControls( {
 						{ manualPosts.map( ( post ) => (
 							<CheckboxControl
 								key={ post.id }
-								label={ post.title?.rendered || `#${ post.id }` }
+								label={
+									post.title?.rendered || `#${ post.id }`
+								}
 								checked={ selectedPosts.includes( post.id ) }
 								onChange={ () =>
 									setAttributes( {
@@ -337,7 +345,13 @@ export function PostSourceControls( {
 	);
 }
 
-export function ColumnsControl( { columns, onChange, min = 2, max = 6, label } ) {
+export function ColumnsControl( {
+	columns,
+	onChange,
+	min = 2,
+	max = 6,
+	label,
+} ) {
 	return (
 		<RangeControl
 			label={ label || __( 'Số cột hiển thị', 'laca' ) }

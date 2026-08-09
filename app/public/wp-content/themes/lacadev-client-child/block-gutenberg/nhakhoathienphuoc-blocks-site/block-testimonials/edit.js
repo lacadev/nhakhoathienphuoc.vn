@@ -299,9 +299,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					</p>
 					<ColorPicker
 						color={ quoteColor }
-						onChange={ ( v ) =>
-							setAttributes( { quoteColor: v } )
-						}
+						onChange={ ( v ) => setAttributes( { quoteColor: v } ) }
 						enableAlpha={ false }
 					/>
 					<p style={ { marginTop: 12, marginBottom: 4 } }>

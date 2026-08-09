@@ -162,9 +162,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					</p>
 					<ColorPicker
 						color={ titleColor }
-						onChange={ ( v ) =>
-							setAttributes( { titleColor: v } )
-						}
+						onChange={ ( v ) => setAttributes( { titleColor: v } ) }
 						enableAlpha={ false }
 					/>
 					<p style={ { marginTop: 12, marginBottom: 4 } }>

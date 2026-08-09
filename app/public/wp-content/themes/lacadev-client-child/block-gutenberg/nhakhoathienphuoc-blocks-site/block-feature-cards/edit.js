@@ -161,10 +161,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					title={ __( 'Nguồn nội dung', 'laca' ) }
 					extraModeOptions={ [
 						{
-							label: __(
-								'Nhập tay (danh sách cố định)',
-								'laca'
-							),
+							label: __( 'Nhập tay (danh sách cố định)', 'laca' ),
 							value: 'custom',
 						},
 					] }
@@ -176,7 +173,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						initialOpen={ false }
 					>
 						<TextControl
-							label={ __( 'CTA Text (áp dụng cho mọi thẻ)', 'laca' ) }
+							label={ __(
+								'CTA Text (áp dụng cho mọi thẻ)',
+								'laca'
+							) }
 							value={ ctaText || '' }
 							onChange={ ( v ) =>
 								setAttributes( { ctaText: v } )
@@ -223,11 +223,7 @@ export default function Edit( { attributes, setAttributes } ) {
 									label={ __( 'Mô tả', 'laca' ) }
 									value={ service.description }
 									onChange={ ( v ) =>
-										updateService(
-											index,
-											'description',
-											v
-										)
+										updateService( index, 'description', v )
 									}
 								/>
 								<TextControl
@@ -264,7 +260,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					</>
 				) }
 
-				<PanelBody title={ __( 'Giao diện', 'laca' ) } initialOpen={ false }>
+				<PanelBody
+					title={ __( 'Giao diện', 'laca' ) }
+					initialOpen={ false }
+				>
 					<p style={ { marginBottom: 4 } }>
 						{ __( 'Màu nền section', 'laca' ) }
 					</p>
@@ -278,9 +277,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					</p>
 					<ColorPicker
 						color={ titleColor }
-						onChange={ ( v ) =>
-							setAttributes( { titleColor: v } )
-						}
+						onChange={ ( v ) => setAttributes( { titleColor: v } ) }
 						enableAlpha={ false }
 					/>
 					<p style={ { marginTop: 12, marginBottom: 4 } }>

@@ -34,7 +34,10 @@ export default function Edit( { attributes, setAttributes } ) {
 		return (
 			<BlockPreviewMock
 				kicker={ __( 'Why Choose Us', 'laca' ) }
-				title={ attributes.heading || __( 'Tại sao nên chọn chúng tôi?', 'laca' ) }
+				title={
+					attributes.heading ||
+					__( 'Tại sao nên chọn chúng tôi?', 'laca' )
+				}
 				columns={ 4 }
 				image={ previewImage }
 			/>
@@ -97,7 +100,8 @@ export default function Edit( { attributes, setAttributes } ) {
 							<PanelRow>
 								<IconInput
 									icon={
-										typeof item.icon === 'string' || ! item.icon
+										typeof item.icon === 'string' ||
+										! item.icon
 											? { type: 'svg', svg: '' }
 											: item.icon
 									}
@@ -186,9 +190,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					</p>
 					<ColorPicker
 						color={ titleColor }
-						onChange={ ( v ) =>
-							setAttributes( { titleColor: v } )
-						}
+						onChange={ ( v ) => setAttributes( { titleColor: v } ) }
 						enableAlpha={ false }
 					/>
 					<p style={ { marginTop: 12, marginBottom: 4 } }>

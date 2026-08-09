@@ -34,7 +34,9 @@ export default function Edit( { attributes, setAttributes } ) {
 		return (
 			<BlockPreviewMock
 				kicker={ __( 'Clinic Stats', 'laca' ) }
-				title={ attributes.heading || __( 'Thống kê phòng khám', 'laca' ) }
+				title={
+					attributes.heading || __( 'Thống kê phòng khám', 'laca' )
+				}
 				columns={ 4 }
 				image={ previewImage }
 			/>
@@ -85,7 +87,8 @@ export default function Edit( { attributes, setAttributes } ) {
 							<PanelRow>
 								<IconInput
 									icon={
-										typeof item.icon === 'string' || ! item.icon
+										typeof item.icon === 'string' ||
+										! item.icon
 											? { type: 'svg', svg: '' }
 											: item.icon
 									}

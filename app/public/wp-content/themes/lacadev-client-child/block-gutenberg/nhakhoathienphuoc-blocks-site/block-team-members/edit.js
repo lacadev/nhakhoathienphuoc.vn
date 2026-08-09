@@ -221,7 +221,13 @@ export default function Edit( { attributes, setAttributes } ) {
 					title={ __( 'Giao diện', 'laca' ) }
 					initialOpen={ false }
 				>
-					<p style={ { fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.5rem' } }>
+					<p
+						style={ {
+							fontSize: '0.8rem',
+							fontWeight: 600,
+							marginBottom: '0.5rem',
+						} }
+					>
 						{ __( 'Màu tên bác sĩ', 'laca' ) }
 					</p>
 					<ColorPicker
@@ -231,7 +237,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						defaultValue="#263238"
 					/>
 
-					<p style={ { fontSize: '0.8rem', fontWeight: 600, margin: '1rem 0 0.5rem' } }>
+					<p
+						style={ {
+							fontSize: '0.8rem',
+							fontWeight: 600,
+							margin: '1rem 0 0.5rem',
+						} }
+					>
 						{ __( 'Màu chuyên khoa', 'laca' ) }
 					</p>
 					<ColorPicker
@@ -243,7 +255,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						defaultValue="#0d631b"
 					/>
 
-					<p style={ { fontSize: '0.8rem', fontWeight: 600, margin: '1rem 0 0.5rem' } }>
+					<p
+						style={ {
+							fontSize: '0.8rem',
+							fontWeight: 600,
+							margin: '1rem 0 0.5rem',
+						} }
+					>
 						{ __( 'Màu nền thẻ', 'laca' ) }
 					</p>
 					<ColorPicker
@@ -255,7 +273,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						defaultValue="#ffffff"
 					/>
 
-					<p style={ { fontSize: '0.8rem', fontWeight: 600, margin: '1rem 0 0.5rem' } }>
+					<p
+						style={ {
+							fontSize: '0.8rem',
+							fontWeight: 600,
+							margin: '1rem 0 0.5rem',
+						} }
+					>
 						{ __( 'Màu viền thẻ', 'laca' ) }
 					</p>
 					<ColorPicker

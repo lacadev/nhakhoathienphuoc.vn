@@ -26,7 +26,12 @@ export function useInserterPreview( attributes = {} ) {
  *                               khối mock chung (nền đen + card xám).
  * @return {JSX.Element} Inserter preview markup.
  */
-export function BlockPreviewMock( { kicker = '', title = '', columns = 3, image = '' } ) {
+export function BlockPreviewMock( {
+	kicker = '',
+	title = '',
+	columns = 3,
+	image = '',
+} ) {
 	const safeColumns = Math.max( 1, Math.min( 4, Number( columns ) || 3 ) );
 
 	if ( image ) {
